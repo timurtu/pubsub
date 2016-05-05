@@ -3,7 +3,8 @@
  */
 
 // events that are being listened to
-let currentEvents = []
+export let currentEvents = []
+
 export default {
   /**
    * Publish data to any number of events
@@ -23,6 +24,9 @@ export default {
     if(events.length < 1) {
 
       return console.log(`${data} was published to all events!`)
+      // currentEvents.forEach(event => {
+      //
+      // })
     }
 
     // Publish to listed events
@@ -41,7 +45,18 @@ export default {
    * @param data
    */
   sub(callback, ...events) {
+    if(!callback)
+      return console.log(`Please enter a callback with data!`)
 
+    if(events.length < 1)
+      return console.log(`Please enter events to subscribe to!`)
+
+    events.forEach(event => {
+
+      console.log(`Subscribed to ${event}`)
+      currentEvents.push(event)
+    })
+    
   }
 
 }
