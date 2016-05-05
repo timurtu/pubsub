@@ -1,11 +1,14 @@
 {
-  "name": "lib/pubsub",
+  "name": "pubsub",
   "version": "1.0.0",
   "description": "Pure JavaScript Publishing and Subscribing",
-  "main": "pubsub.js",
+  "main": "lib/pubsub.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/timurtu/pubsub.js.git"
+  },
+  "scripts": {
+    "test": "gulp watch"
   },
   "keywords": [
     "pub",

@@ -16,9 +16,9 @@ const paths = {
   testsLibrary: 'testslib'
 }
 
-gulp.task('watch', ['build'], () => {
-  gulp.watch(paths.source, ['build', 'test'])
-  gulp.watch(paths.tests, ['build', 'test'])
+gulp.task('watch', ['build', 'test'], () => {
+  gulp.watch(paths.source, ['test'])
+  gulp.watch(paths.tests, ['test'])
 })
 
 gulp.task('build', ['build-js', 'build-tests'])
@@ -36,7 +36,7 @@ gulp.task('build-js', () => {
 
 })
 
-gulp.task('build-tests', ['build'], () => {
+gulp.task('build-tests', () => {
 
   gutil.log(gutil.colors.blue(`Transpiling JavaScript Tests from ${paths.tests} to ${paths.testsLibrary}.`))
 
@@ -48,7 +48,7 @@ gulp.task('build-tests', ['build'], () => {
     .pipe(gulp.dest(paths.testsLibrary))
 })
 
-gulp.task('test', ['build-tests'], () =>
+gulp.task('test', ['build'], () =>
   gulp.src('testslib/*')
     // gulp-jasmine works on filepaths so you can't have any plugins before it
     .pipe(jasmine())
