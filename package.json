@@ -1,0 +1,26 @@
+{
+  "name": "pubsub.js",
+  "version": "1.0.0",
+  "description": "Pure JavaScript Publishing and Subscribing",
+  "main": "pubsub.js",
+  "scripts": {
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timurtu/pubsub.js.git"
+  },
+  "keywords": [
+    "pub",
+    "sub",
+    "js",
+    "publish",
+    "subscribe"
+  ],
+  "author": "Timur Uzel <timurt.uzel@gmail.com> (https://github.com/timurtu/pubsub.js)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timurtu/pubsub.js/issues"
+  },
+  "homepage": "https://github.com/timurtu/pubsub.js#readme"
+}
