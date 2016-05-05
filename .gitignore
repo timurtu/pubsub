@@ -1,8 +1,11 @@
-### Node template
 # Logs
 logs
 *.log
 npm-debug.log*
+
+# Compiled js
+lib
+testslib
 
 # Runtime data
 pids
