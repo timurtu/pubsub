@@ -5,15 +5,15 @@
 const gulp = require('gulp')
 const babel = require('gulp-babel')
 const jasmine = require('gulp-jasmine')
+var mocha = require('gulp-mocha');
 const changed = require('gulp-changed')
 const gutil = require('gulp-util')
 
 const paths = {
   all: '**/*.js',
-  source: 'src/*.js',
+  source: 'src/**/*.js',
   library: 'lib',
-  tests: 'tests/*.js',
-  testsLibrary: 'testslib'
+  testsLibrary: 'lib/test/unit/*.js'
 }
 
 gulp.task('watch', ['build', 'test'], () => {
@@ -21,11 +21,13 @@ gulp.task('watch', ['build', 'test'], () => {
   gulp.watch(paths.tests, ['test'])
 })
 
-gulp.task('build', ['build-js', 'build-tests'])
+gulp.task('build', ['build-js'])
 
 gulp.task('build-js', () => {
 
-  gutil.log(gutil.colors.blue(`Transpiling JavaScript Source from ${paths.source} to ${paths.library}.`))
+  gutil.log(gutil.colors.blue(
+    `Transpiling JavaScript Source from ${paths.source} to ${paths.library}.`
+  ))
 
   return gulp.src(paths.source)
     .pipe(changed(paths.library))
@@ -36,20 +38,17 @@ gulp.task('build-js', () => {
 
 })
 
-gulp.task('build-tests', () => {
 
-  gutil.log(gutil.colors.blue(`Transpiling JavaScript Tests from ${paths.tests} to ${paths.testsLibrary}.`))
-
-  return gulp.src(paths.tests)
-    .pipe(changed(paths.testsLibrary))
-    .pipe(babel({
-      presets: ['es2015']
+gulp.task('test', ['build'], () => {
+  return gulp.src('lib/test/**/*')
+    // gulp-mocha needs filepaths so you can't have any plugins before it
+    .pipe(mocha({
+      reporter: 'nyan'
     }))
-    .pipe(gulp.dest(paths.testsLibrary))
+    .on("error", handleError)
 })
 
-gulp.task('test', ['build'], () =>
-  gulp.src('testslib/*')
-    // gulp-jasmine works on filepaths so you can't have any plugins before it
-    .pipe(jasmine())
-)
+function handleError(err) {
+  gutil.log(gutil.colors.magenta(err.toString()));
+  this.emit('end');
+}

@@ -20,4 +20,9 @@ pubsub.sub('event2', data => {
 pubsub.pub('bar', 'event1', 'event2')
 // Received bar!
 // Received BAR!
+
+pubsub.pub('every event')
+// Received every event!
+// Received EVERY EVENT!
+
 ```
