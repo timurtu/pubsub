@@ -4,8 +4,7 @@
 
 const gulp = require('gulp')
 const babel = require('gulp-babel')
-const jasmine = require('gulp-jasmine')
-var mocha = require('gulp-mocha');
+const mocha = require('gulp-mocha')
 const changed = require('gulp-changed')
 const gutil = require('gulp-util')
 

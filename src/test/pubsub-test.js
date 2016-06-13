@@ -4,40 +4,36 @@
 
 import PubSub from '../pubsub'
 
-import {
-  assert,
-  expect
-} from 'chai'
-
-let callback
-
-beforeEach(() => {
-
-  callback = data => {
-
-  }
-
-})
+import { expect } from 'chai'
 
 describe('sub', () => {
 
-  it('should attach an event name and callback to currentEvents', () => {
+  beforeEach(() => {
 
-    const subscriptions = PubSub.sub(callback, 'foo')
-
-    expect(subscriptions).to.deep.equal([{eventName: 'foo', callback}])
+    PubSub.currentEvents = {
+      'foo': function (data) {
+      }
+    }
 
   })
 
-  it('should attach event names and callbacks to currentEvents', () => {
+  it('should attach an event name and callback to currentEvents', () => {
 
+    PubSub.sub(data => {
 
-    const subscriptions = PubSub.sub(callback, 'foo', 'bar')
+    }, 'bar')
 
-    expect(subscriptions).to.deep.equal([
-      {eventName: 'foo', callback},
-      {eventName: 'bar', callback}
-    ])
+    expect(PubSub.currentEvents).to.have.all.keys(['bar', 'foo']);
+
+  })
+
+  it('should attach an event names and callbacks to currentEvents', () => {
+
+    PubSub.sub(data => {
+
+    }, 'bar', 'baz')
+
+    expect(PubSub.currentEvents).to.have.all.keys(['bar', 'baz', 'foo']);
 
   })
 
@@ -45,19 +41,84 @@ describe('sub', () => {
 
 describe('pub', () => {
 
-  it('should publish data to a subscribed event', () => {
+  let publishedDataFoo, publishedDataBar, publishedDataBaz
 
-    let oldData = 'old data'
+  beforeEach(() => {
 
-    PubSub.sub(data => {
-      oldData = data
-    }, 'event1')
+    publishedDataFoo = ''
+    publishedDataBar = ''
+    publishedDataBaz = ''
 
-    PubSub.pub('new data', 'event1')
-
-    expect(oldData).to.equal('new data')
+    PubSub.currentEvents = {
+      'foo': function (data) {
+        publishedDataFoo = data
+      },
+      'bar': function(data) {
+        publishedDataBar = data
+      },
+      'baz': function(data) {
+        publishedDataBaz = data
+      }
+    }
 
   })
 
+  it('should publish data to single subscribed event', () => {
+
+    PubSub.pub('new data', 'foo')
+
+    expect(publishedDataFoo).to.equal('new data')
+
+  })
+
+  it('should publish data to two subscribed events', () => {
+
+    PubSub.pub('new data', 'foo', 'bar')
+
+    expect(publishedDataFoo).to.equal('new data')
+    expect(publishedDataBar).to.equal('new data')
+
+  })
+
+  it('should publish data to all events', () => {
+
+    PubSub.pub('new data')
+
+    expect(publishedDataFoo).to.equal('new data')
+    expect(publishedDataBar).to.equal('new data')
+    expect(publishedDataBaz).to.equal('new data')
+
+  })
+
+})
+
+describe('unsub', () => {
+
+  beforeEach(() => {
+
+    PubSub.currentEvents = {
+      'foo': function (data) {
+      },
+      'bar': function (data) {
+      }
+    }
+
+  })
+
+  it('should remove all events', () => {
+
+    PubSub.unsub()
+
+    expect(PubSub.currentEvents).to.be.empty
+
+  })
+
+  it('should remove a single event', () => {
+
+    PubSub.unsub('bar')
+
+    expect(PubSub.currentEvents).to.have.all.keys(['foo'])
+
+  })
 
 })

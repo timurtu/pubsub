@@ -3,26 +3,30 @@
 ## Pure JavaScript Publishing and Subscribing
 
 ```javascript
-import {pub, sub} from 'pubsub'
+import PubSub from 'pubsub'
 
-
-pubsub.sub('event1', data => {
+PubSub.sub(data => {
   console.log(`Received ${data}!`)
-})
+}, 'event1')
 
-pubsub.pub('foo', 'event1', 'event2')
+PubSub.pub('foo', 'event1')
 // Received foo!
 
-pubsub.sub('event2', data => {
+PubSub.sub(data => {
   console.log(`Received ${data.toUpperCase()}`)
-})
+}, 'event2')
 
-pubsub.pub('bar', 'event1', 'event2')
+PubSub.pub('bar', 'event1', 'event2')
 // Received bar!
 // Received BAR!
 
-pubsub.pub('every event')
+PubSub.pub('every event')
 // Received every event!
 // Received EVERY EVENT!
-
 ```
+
+## Build from source
+- `git clone` this repo
+- `cd` into this repo
+- `npm install`
+- `npm test`
